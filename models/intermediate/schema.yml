@@ -1,0 +1,36 @@
+version: 2
+
+models:
+  - name: int_identity_stitching
+    description: "Identity stitching model that unifies anonymous and authenticated users for complete customer journey tracking. Provides journey completeness, engagement, and identity resolution confidence."
+    columns:
+      - name: unified_user_id
+        description: "Unified user identifier (either authenticated user_id or anonymous_user_id)"
+      - name: has_identity_resolution
+        description: "Indicates if identity stitching was successful for this user (1 = yes, 0 = no)"
+      - name: max_match_score
+        description: "Maximum match score for identity resolution confidence"
+      - name: first_touch_timestamp
+        description: "Timestamp of the user's first tracked event"
+      - name: last_touch_timestamp
+        description: "Timestamp of the user's last tracked event"
+      - name: total_events
+        description: "Total number of tracked events for this user"
+      - name: unique_campaigns
+        description: "Number of unique campaigns this user interacted with"
+      - name: pre_signup_events
+        description: "Number of events before signup (anonymous)"
+      - name: post_signup_events
+        description: "Number of events after signup (authenticated)"
+      - name: anonymous_only_events
+        description: "Number of events with no identity resolution"
+      - name: campaign_journey
+        description: "Comma-separated list of campaigns in the user's journey"
+      - name: journey_completeness
+        description: "Classification of the user's journey completeness"
+      - name: identity_resolution_confidence
+        description: "Confidence level of identity stitching (High, Medium, Low)"
+      - name: engagement_level
+        description: "Engagement level based on total events (High, Medium, Low, Single Touch)"
+      - name: dbt_updated_at
+        description: "Timestamp when this record was last updated by dbt" 

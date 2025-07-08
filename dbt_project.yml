@@ -1,0 +1,45 @@
+name: 'lottery_ecommerce_analytics'
+version: '1.0.0'
+config-version: 2
+
+profile: 'lottery_ecommerce'
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  lottery_ecommerce_analytics:
+    staging:
+      +materialized: view
+    intermediate:
+      +materialized: table
+    marts:
+      +materialized: table
+
+vars:
+  # Environment variables
+  environment: "development"
+  
+  # Business logic variables
+  min_deposit_amount_minor: 100  # Minimum deposit amount in minor units
+  high_jackpot_threshold_minor: 1000000  # High jackpot threshold in minor units
+  
+  # Date ranges for analysis
+  lookback_days: 90
+  attribution_window_days: 30
+
+# Documentation
+docs-paths: ["docs"]
+
+# Seeds configuration
+seeds:
+  lottery_ecommerce_analytics: 

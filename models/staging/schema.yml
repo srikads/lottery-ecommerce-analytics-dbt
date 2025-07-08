@@ -1,0 +1,149 @@
+version: 2
+
+models:
+  - name: stg_signups
+    description: "Staging model for user signups data"
+    columns:
+      - name: user_id
+        description: "Unique identifier for each user"
+        tests:
+          - not_null
+          - unique
+      - name: signup_id
+        description: "Unique identifier for each signup event"
+        tests:
+          - not_null
+          - unique
+      - name: signup_timestamp
+        description: "Timestamp when the user signed up"
+        tests:
+          - not_null
+      - name: country
+        description: "Country code where the user signed up"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['US', 'CA', 'GB', 'DE', 'FR', 'AU']
+
+  - name: stg_deposits
+    description: "Staging model for user deposits data"
+    columns:
+      - name: deposit_id
+        description: "Unique identifier for each deposit"
+        tests:
+          - not_null
+          - unique
+      - name: user_id
+        description: "Foreign key to user table"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_signups')
+              field: user_id
+      - name: deposit_amount_inminor
+        description: "Deposit amount in minor units (e.g., cents)"
+        tests:
+          - not_null
+          - positive_values
+      - name: deposit_timestamp
+        description: "Timestamp when the deposit was made"
+        tests:
+          - not_null
+
+  - name: stg_ticket_purchases
+    description: "Staging model for lottery ticket purchases"
+    columns:
+      - name: purchase_id
+        description: "Unique identifier for each ticket purchase"
+        tests:
+          - not_null
+          - unique
+      - name: user_id
+        description: "Foreign key to user table"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_signups')
+              field: user_id
+      - name: game_id
+        description: "Foreign key to games table"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_games')
+              field: game_id
+      - name: purchase_amount_usd
+        description: "Purchase amount in USD"
+        tests:
+          - not_null
+          - positive_values
+      - name: purchase_timestamp
+        description: "Timestamp when the ticket was purchased"
+        tests:
+          - not_null
+
+  - name: stg_games
+    description: "Staging model for lottery games"
+    columns:
+      - name: game_id
+        description: "Unique identifier for each game"
+        tests:
+          - not_null
+          - unique
+      - name: game_name
+        description: "Name of the lottery game"
+        tests:
+          - not_null
+      - name: jackpot_estimate_inminor
+        description: "Estimated jackpot amount in minor units"
+        tests:
+          - not_null
+          - positive_values
+
+  - name: stg_funnel_spend
+    description: "Staging model for marketing funnel spend data"
+    columns:
+      - name: date
+        description: "Date of the marketing spend"
+        tests:
+          - not_null
+      - name: campaign_name
+        description: "Name of the marketing campaign"
+        tests:
+          - not_null
+      - name: channel
+        description: "Marketing channel (Email, Social, etc.)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Email', 'Social', 'Search', 'Display', 'Affiliate']
+      - name: spend_inminor
+        description: "Marketing spend amount in minor units"
+        tests:
+          - not_null
+          - positive_values
+
+  - name: stg_web_events
+    description: "Staging model for web tracking events"
+    columns:
+      - name: event_id
+        description: "Unique identifier for each web event"
+        tests:
+          - not_null
+          - unique
+      - name: user_id
+        description: "User ID if the user is logged in"
+        tests:
+          - relationships:
+              to: ref('stg_signups')
+              field: user_id
+              config:
+                severity: warn
+      - name: anonymous_user_id
+        description: "Anonymous user ID for non-logged in users"
+      - name: utm_campaign
+        description: "UTM campaign parameter from the URL"
+      - name: event_timestamp
+        description: "Timestamp when the event occurred"
+        tests:
+          - not_null 

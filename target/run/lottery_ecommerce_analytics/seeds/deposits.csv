@@ -1,0 +1,14 @@
+
+    
+    
+    
+    create table main."deposits" ("deposit_id" INT,"user_id" INT,"deposit_amount_inminor" INT,"deposit_timestamp" TEXT)
+  ;
+    -- dbt seed --
+    
+            insert into main.deposits ("deposit_id", "user_id", "deposit_amount_inminor", "deposit_timestamp") values
+            (?,?,?,?),(?,?,?,?),(?,?,?,?)
+        
+
+;
+  

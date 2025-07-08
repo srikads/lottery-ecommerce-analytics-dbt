@@ -1,0 +1,4 @@
+event_id,user_id,anonymous_user_id,utm_campaign,event_timestamp
+5001,1,,NewYearPromo,2024-01-01 09:50:00
+5002,2,,WinterBlast,2024-01-02 10:50:00
+5003,,anon_123,NewYearPromo,2024-01-03 11:50:00 

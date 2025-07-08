@@ -1,0 +1,4 @@
+deposit_id,user_id,deposit_amount_inminor,deposit_timestamp
+2001,1,500,2024-01-01 10:05:00
+2002,2,1000,2024-01-02 11:10:00
+2003,3,200,2024-01-03 12:20:00 

@@ -1,0 +1,14 @@
+
+    
+    
+    
+    create table main."funnel_spend" ("date" TEXT,"campaign_name" TEXT,"channel" TEXT,"spend_inminor" INT)
+  ;
+    -- dbt seed --
+    
+            insert into main.funnel_spend ("date", "campaign_name", "channel", "spend_inminor") values
+            (?,?,?,?),(?,?,?,?)
+        
+
+;
+  

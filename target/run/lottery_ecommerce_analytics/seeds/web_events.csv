@@ -1,0 +1,14 @@
+
+    
+    
+    
+    create table main."web_events" ("event_id" INT,"user_id" INT,"anonymous_user_id" TEXT,"utm_campaign" TEXT,"event_timestamp" TEXT)
+  ;
+    -- dbt seed --
+    
+            insert into main.web_events ("event_id", "user_id", "anonymous_user_id", "utm_campaign", "event_timestamp") values
+            (?,?,?,?,?),(?,?,?,?,?),(?,?,?,?,?)
+        
+
+;
+  

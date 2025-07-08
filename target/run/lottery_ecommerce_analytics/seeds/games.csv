@@ -1,0 +1,14 @@
+
+    
+    
+    
+    create table main."games" ("game_id" INT,"game_name" TEXT,"jackpot_estimate_inminor" INT)
+  ;
+    -- dbt seed --
+    
+            insert into main.games ("game_id", "game_name", "jackpot_estimate_inminor") values
+            (?,?,?),(?,?,?)
+        
+
+;
+  

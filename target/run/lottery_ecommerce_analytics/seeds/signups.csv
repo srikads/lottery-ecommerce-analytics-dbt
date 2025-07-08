@@ -1,0 +1,14 @@
+
+    
+    
+    
+    create table main."signups" ("user_id" INT,"signup_id" INT,"signup_timestamp" TEXT,"country" TEXT)
+  ;
+    -- dbt seed --
+    
+            insert into main.signups ("user_id", "signup_id", "signup_timestamp", "country") values
+            (?,?,?,?),(?,?,?,?),(?,?,?,?)
+        
+
+;
+  

@@ -1,0 +1,198 @@
+version: 2
+
+models:
+  - name: dim_customer
+    description: "Customer dimension table with comprehensive customer attributes and behavior metrics"
+    config:
+      materialized: table
+    columns:
+      - name: user_id
+        description: "Primary key - unique identifier for each customer"
+        tests:
+          - not_null
+          - unique
+      - name: country
+        description: "Country where the customer signed up"
+        tests:
+          - not_null
+      - name: signup_timestamp
+        description: "Timestamp when the customer signed up"
+        tests:
+          - not_null
+      - name: signup_date
+        description: "Date when the customer signed up"
+        tests:
+          - not_null
+      - name: total_deposits
+        description: "Total number of deposits made by the customer"
+        tests:
+          - not_null
+          - positive_values
+      - name: total_deposit_amount_minor
+        description: "Total deposit amount in minor units"
+        tests:
+          - not_null
+          - positive_values
+      - name: first_deposit_timestamp
+        description: "Timestamp of the customer's first deposit"
+      - name: last_deposit_timestamp
+        description: "Timestamp of the customer's most recent deposit"
+      - name: avg_deposit_amount_minor
+        description: "Average deposit amount in minor units"
+        tests:
+          - not_null
+          - positive_values
+      - name: total_purchases
+        description: "Total number of ticket purchases made by the customer"
+        tests:
+          - not_null
+          - positive_values
+      - name: total_purchase_amount_usd
+        description: "Total amount spent on ticket purchases in USD"
+        tests:
+          - not_null
+          - positive_values
+      - name: first_purchase_timestamp
+        description: "Timestamp of the customer's first ticket purchase"
+      - name: last_purchase_timestamp
+        description: "Timestamp of the customer's most recent ticket purchase"
+      - name: avg_purchase_amount_usd
+        description: "Average ticket purchase amount in USD"
+        tests:
+          - not_null
+          - positive_values
+      - name: unique_games_played
+        description: "Number of unique lottery games the customer has played"
+        tests:
+          - not_null
+          - positive_values
+      - name: total_web_events
+        description: "Total number of web events tracked for the customer"
+        tests:
+          - not_null
+          - non_negative_values
+      - name: first_web_event_timestamp
+        description: "Timestamp of the customer's first web event"
+      - name: last_web_event_timestamp
+        description: "Timestamp of the customer's most recent web event"
+      - name: unique_campaigns_engaged
+        description: "Number of unique marketing campaigns the customer has engaged with"
+        tests:
+          - not_null
+          - non_negative_values
+      - name: high_jackpot_games_played
+        description: "Number of high jackpot games the customer has played"
+        tests:
+          - not_null
+          - non_negative_values
+      - name: high_jackpot_spend_usd
+        description: "Total amount spent on high jackpot games in USD"
+        tests:
+          - not_null
+          - non_negative_values
+      - name: days_to_first_purchase
+        description: "Number of days from signup to first ticket purchase"
+      - name: days_to_first_deposit
+        description: "Number of days from signup to first deposit"
+      - name: days_to_first_web_event
+        description: "Number of days from signup to first web event"
+      - name: customer_segment
+        description: "Customer segment based on purchase behavior (High Value, Medium Value, Low Value, No Purchase)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['High Value', 'Medium Value', 'Low Value', 'No Purchase']
+      - name: player_type
+        description: "Player type based on high jackpot participation (High Jackpot Player, Regular Player)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['High Jackpot Player', 'Regular Player']
+      - name: dbt_updated_at
+        description: "Timestamp when this record was last updated by dbt"
+        tests:
+          - not_null 
+
+  - name: marketing_attribution
+    description: "Marketing attribution model for campaign performance and ROAS calculation. Includes first-touch and multi-touch attribution, conversion rates, and cost metrics."
+    columns:
+      - name: utm_campaign
+        description: "Marketing campaign name (from UTM parameter)"
+      - name: channel
+        description: "Marketing channel (Email, Social, etc.)"
+      - name: spend_usd
+        description: "Total spend in USD for the campaign/channel"
+      - name: attributed_users
+        description: "Number of users attributed to this campaign (first-touch)"
+      - name: depositing_users
+        description: "Number of users who made a first deposit after attribution"
+      - name: total_first_deposits_usd
+        description: "Total value of first deposits attributed to this campaign"
+      - name: avg_first_deposit_usd
+        description: "Average first deposit amount for attributed users"
+      - name: signup_to_deposit_conversion_rate
+        description: "Conversion rate from signup to first deposit"
+      - name: roas_first_deposit
+        description: "Return on Ad Spend (ROAS) for first deposits"
+      - name: cpa_first_deposit
+        description: "Cost per acquisition (first deposit)"
+      - name: weighted_roas
+        description: "Multi-touch weighted ROAS"
+      - name: performance_category
+        description: "Performance category based on ROAS"
+      - name: conversion_category
+        description: "Conversion category based on conversion rate"
+      - name: dbt_updated_at
+        description: "Timestamp when this record was last updated by dbt"
+
+  - name: customer_ltv_scoring
+    description: "Customer LTV scoring model for VIP segmentation and promotion targeting. Combines RFM, behavioral, and predicted LTV metrics."
+    columns:
+      - name: user_id
+        description: "Unique identifier for each customer"
+      - name: ltv_score
+        description: "Overall LTV score (0-100)"
+      - name: vip_tier
+        description: "VIP tier classification (Diamond, Gold, Silver, Standard)"
+      - name: promotion_category
+        description: "Promotion eligibility category"
+      - name: predicted_annual_ltv
+        description: "Predicted annual LTV based on historical behavior"
+      - name: recency_score
+        description: "Recency score (1-5)"
+      - name: frequency_score
+        description: "Frequency score (1-5)"
+      - name: monetary_score
+        description: "Monetary score (1-5)"
+      - name: behavioral_score
+        description: "Behavioral score (1-20)"
+      - name: risk_score
+        description: "Risk score (1-3)"
+      - name: dbt_updated_at
+        description: "Timestamp when this record was last updated by dbt"
+
+  - name: high_jackpot_analysis
+    description: "High jackpot analysis model for evaluating marketing channel effectiveness in acquiring high jackpot players. Includes conversion, ROAS, and engagement metrics."
+    columns:
+      - name: utm_campaign
+        description: "Marketing campaign name (from UTM parameter)"
+      - name: channel
+        description: "Marketing channel (Email, Social, etc.)"
+      - name: spend_usd
+        description: "Total spend in USD for the campaign/channel"
+      - name: high_jackpot_players
+        description: "Number of players who participated in high jackpot games"
+      - name: high_jackpot_conversion_rate
+        description: "Conversion rate to high jackpot participation"
+      - name: total_high_jackpot_revenue
+        description: "Total revenue from high jackpot players"
+      - name: high_jackpot_roas
+        description: "ROAS for high jackpot players"
+      - name: cpa_high_jackpot_player
+        description: "Cost per high jackpot player acquired"
+      - name: performance_category
+        description: "Performance category based on high jackpot ROAS"
+      - name: conversion_category
+        description: "Conversion category based on high jackpot conversion rate"
+      - name: dbt_updated_at
+        description: "Timestamp when this record was last updated by dbt" 

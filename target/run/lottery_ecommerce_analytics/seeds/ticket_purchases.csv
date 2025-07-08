@@ -1,0 +1,14 @@
+
+    
+    
+    
+    create table main."ticket_purchases" ("purchase_id" INT,"user_id" INT,"game_id" INT,"purchase_amount_usd" INT,"purchase_timestamp" TEXT)
+  ;
+    -- dbt seed --
+    
+            insert into main.ticket_purchases ("purchase_id", "user_id", "game_id", "purchase_amount_usd", "purchase_timestamp") values
+            (?,?,?,?,?),(?,?,?,?,?),(?,?,?,?,?)
+        
+
+;
+  
